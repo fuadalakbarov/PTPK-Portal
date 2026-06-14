@@ -6,7 +6,7 @@ import { IconLoader2, IconGavel, IconFileTypePdf } from '@tabler/icons-react';
 import { generateUsaqPdf } from '../utils/exportPdf';
 
 const TEHSIL_FORMASI_OPTIONS = [
-  { value: 'xususi', label: 'Xüsusi sinif },
+  { value: 'xususi', label: 'Xüsusi sinif' },
   { value: 'evde', label: 'Evdə təhsil' },
   { value: 'inkluziv', label: 'İnklüziv təhsil' },
 ];
