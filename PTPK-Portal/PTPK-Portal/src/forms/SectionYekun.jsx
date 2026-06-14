@@ -6,21 +6,20 @@ import { IconLoader2, IconGavel, IconFileTypePdf } from '@tabler/icons-react';
 import { generateUsaqPdf } from '../utils/exportPdf';
 
 const TEHSIL_FORMASI_OPTIONS = [
-  { value: 'eyani', label: 'Əyani' },
-  { value: 'mesafeden', label: 'Məsafədən (distant)' },
-  { value: 'ferdi', label: 'Fərdi (evdə)' },
+  { value: 'xususi', label: 'Xüsusi sinif },
+  { value: 'evde', label: 'Evdə təhsil' },
+  { value: 'inkluziv', label: 'İnklüziv təhsil' },
 ];
 
 const MUESSISE_TIPI_OPTIONS = [
   { value: 'umumi', label: 'Ümumi təhsil müəssisəsi' },
   { value: 'xususi', label: 'Xüsusi təhsil müəssisəsi' },
-  { value: 'inkluziv', label: 'İnklüziv təhsil (ümumi məktəbdə)' },
+  
 ];
 
 const TEHSIL_PROQRAMI_OPTIONS = [
   { value: 'umumi', label: 'Ümumi təhsil proqramı' },
-  { value: 'ferdilesdirilmis', label: 'Fərdiləşdirilmiş tədris proqramı (FTP)' },
-  { value: 'xususi', label: 'Xüsusi (korreksiyaedici) proqram' },
+  { value: 'xususi', label: 'Xüsusi proqram' },
 ];
 
 const EMPTY_FORM = {
