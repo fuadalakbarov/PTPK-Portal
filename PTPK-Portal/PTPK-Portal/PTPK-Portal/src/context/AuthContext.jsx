@@ -27,7 +27,15 @@ export function AuthProvider({ children }) {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
-        setProfile(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Köhnə ad/PIN axınından qalan profilləri tək giriş axınına uyğunlaşdır
+        if (parsed.id !== 'admin') {
+          const migrated = { id: 'admin', ad: 'Komissiya', rol: 'admin' };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+          setProfile(migrated);
+        } else {
+          setProfile(parsed);
+        }
       } catch {
         localStorage.removeItem(STORAGE_KEY);
       }
