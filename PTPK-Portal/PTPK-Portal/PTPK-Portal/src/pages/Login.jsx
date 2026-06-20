@@ -6,7 +6,6 @@ export default function Login() {
   const { login } = useAuth();
   const [users, setUsers] = useState([]);
   const [selectedId, setSelectedId] = useState('');
-  const [pin, setPin] = useState('');
   const [error, setError] = useState('');
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -37,16 +36,12 @@ export default function Login() {
       setError('Adınızı seçin');
       return;
     }
-    if (pin.trim().length !== 4) {
-      setError('PIN 4 rəqəm olmalıdır');
-      return;
-    }
 
     setSubmitting(true);
 
     const { data, error } = await supabase
       .from('istifadeciler')
-      .select('id, ad, rol, pin')
+      .select('id, ad, rol')
       .eq('id', selectedId)
       .single();
 
@@ -54,11 +49,6 @@ export default function Login() {
 
     if (error || !data) {
       setError('Xəta baş verdi, yenidən cəhd edin');
-      return;
-    }
-
-    if (data.pin !== pin.trim()) {
-      setError('PIN yanlışdır');
       return;
     }
 
@@ -99,22 +89,6 @@ export default function Login() {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1.5">
-              PIN kodu
-            </label>
-            <input
-              type="password"
-              inputMode="numeric"
-              maxLength={4}
-              required
-              value={pin}
-              onChange={(e) => setPin(e.target.value.replace(/\D/g, ''))}
-              placeholder="••••"
-              className="w-full px-4 py-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm tracking-[0.5em] text-center text-lg"
-            />
-          </div>
-
           <button
             type="submit"
             disabled={submitting}
@@ -129,6 +103,13 @@ export default function Login() {
             {error}
           </p>
         )}
+
+        <a
+          href="https://ptpk.onrender.com/komissiya.html"
+          className="mt-6 flex items-center justify-center gap-2 text-sm text-slate-500 hover:text-blue-600 transition-colors"
+        >
+          ← Əsas səhifəyə qayıt
+        </a>
       </div>
     </div>
   );
