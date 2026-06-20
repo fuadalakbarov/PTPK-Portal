@@ -7,6 +7,7 @@ import {
   IconSchool,
   IconGavel,
   IconLogout,
+  IconArrowLeft,
 } from '@tabler/icons-react';
 
 // Bölmələrin tam siyahısı — hər birinin hansı rola açıq olduğu göstərilir
@@ -166,6 +167,13 @@ export default function Sidebar({
             <p className="text-xs text-slate-400 capitalize">{rol}</p>
           </div>
         </div>
+        <a
+          href="https://ptpk.onrender.com/komissiya.html"
+          className="w-full flex items-center gap-2 px-3 py-2 mt-1 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-blue-600 transition-colors"
+        >
+          <IconArrowLeft size={16} />
+          Əsas səhifəyə qayıt
+        </a>
         <button
           onClick={onSignOut}
           className="w-full flex items-center gap-2 px-3 py-2 mt-1 rounded-lg text-sm text-slate-500 hover:bg-slate-50 hover:text-red-600 transition-colors"
