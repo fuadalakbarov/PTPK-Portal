@@ -5,7 +5,7 @@ export const inputClass =
 
 export function Card({ title, children }) {
   return (
-    <div className="bg-white rounded-xl border border-slate-200 p-5">
+    <div className="bg-white rounded-xl border border-slate-200 p-4 sm:p-5">
       {title && <h2 className="text-sm font-semibold text-slate-900 mb-4">{title}</h2>}
       {children}
     </div>
@@ -63,7 +63,7 @@ const COLOR_CLASSES = {
  */
 export function ScoreField({ code, label, value, onChange }) {
   return (
-    <div className="flex items-center justify-between gap-4 py-2.5 border-b border-slate-100 last:border-0">
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 py-2.5 border-b border-slate-100 last:border-0">
       <div className="flex items-baseline gap-2 min-w-0">
         <span className="text-xs font-mono text-slate-400 flex-shrink-0">
           {code.toUpperCase()}
@@ -114,7 +114,7 @@ export function ScoreLegend() {
 
 export function SaveBar({ saving, saved, error, onSave }) {
   return (
-    <div className="sticky bottom-0 bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+    <div className="sticky bottom-0 bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-sm">
       <div>
         {error && <p className="text-sm text-red-600">{error}</p>}
         {saved && (
@@ -126,7 +126,7 @@ export function SaveBar({ saving, saved, error, onSave }) {
       <button
         onClick={onSave}
         disabled={saving}
-        className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
+        className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 text-white text-sm font-medium px-5 py-2.5 rounded-lg transition-colors"
       >
         {saving ? (
           <IconLoader2 size={16} className="animate-spin" />
