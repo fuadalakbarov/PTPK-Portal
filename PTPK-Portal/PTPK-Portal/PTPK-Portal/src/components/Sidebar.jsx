@@ -8,6 +8,7 @@ import {
   IconGavel,
   IconLogout,
   IconArrowLeft,
+  IconX,
 } from '@tabler/icons-react';
 
 // Bölmələrin tam siyahısı — hər birinin hansı rola açıq olduğu göstərilir
@@ -62,6 +63,8 @@ export default function Sidebar({
   selectedUsaq,
   profile,
   onSignOut,
+  open,
+  onClose,
 }) {
   const rol = profile?.rol || '';
 
@@ -73,16 +76,27 @@ export default function Sidebar({
   }
 
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 flex flex-col h-screen sticky top-0">
+    <aside
+      className={`w-72 md:w-64 bg-white border-r border-slate-200 flex flex-col h-screen fixed md:sticky top-0 left-0 z-50 transition-transform duration-200 ${
+        open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      }`}
+    >
       {/* Logo / başlıq */}
       <div className="px-5 py-5 border-b border-slate-200 flex items-center gap-3">
         <img src="/logo.png" alt="PTPK" className="w-10 h-10 flex-shrink-0" />
-        <div>
+        <div className="flex-1 min-w-0">
           <h1 className="font-serif text-sm font-bold text-[#0d1b2a] leading-tight">
-            PTPK Portalı
+            Şagird Qiymətləndirməsi
           </h1>
           <p className="text-xs text-slate-400">Komissiya idarəetməsi</p>
         </div>
+        <button
+          onClick={onClose}
+          aria-label="Menyu bağla"
+          className="md:hidden p-1 text-slate-400 flex-shrink-0"
+        >
+          <IconX size={20} />
+        </button>
       </div>
 
       {/* Naviqasiya */}
