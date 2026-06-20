@@ -29,12 +29,12 @@ export default function UsaqDetay({ usaq, section, profile, onSaved }) {
   }
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 md:p-8">
       <div className="mb-6">
         <p className="text-xs font-medium text-blue-600 uppercase tracking-wide">
           {usaq?.c1_saa || 'Uşaq'}
         </p>
-        <h1 className="text-xl font-semibold text-slate-900 mt-1">
+        <h1 className="text-lg sm:text-xl font-semibold text-slate-900 mt-1">
           {sectionMeta.title} — {sectionMeta.subtitle}
         </h1>
       </div>
