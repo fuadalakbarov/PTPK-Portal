@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { IconDeviceFloppy, IconLoader2, IconCheck } from '@tabler/icons-react';
+import { SCHOOL_GROUPS } from '../utils/schoolList';
 
 const SINIF_OPTIONS = [
   '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
@@ -46,6 +47,7 @@ const EMPTY_FORM = {
   g5_vesiqe_var: false,
   h6_sinif: '',
   h7_tedris_dili: '',
+  mekteb_adi: '',
 };
 
 export default function SectionC({ usaq, onSaved }) {
@@ -142,6 +144,24 @@ export default function SectionC({ usaq, onSaved }) {
               onChange={(e) => handleChange('a3_ptpk', e.target.value)}
               className={inputClass}
             />
+          </Field>
+          <Field label="Məktəb (uşağın təhsil aldığı müəssisə)" full>
+            <select
+              value={form.mekteb_adi || ''}
+              onChange={(e) => handleChange('mekteb_adi', e.target.value)}
+              className={inputClass}
+            >
+              <option value="">— Məktəb seçin —</option>
+              {SCHOOL_GROUPS.map((group) => (
+                <optgroup key={group.label} label={`📍 ${group.label}`}>
+                  {group.schools.map((school) => (
+                    <option key={school} value={school}>
+                      {school}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
           </Field>
         </div>
       </Card>
