@@ -11,6 +11,8 @@ import {
   IconTrash,
   IconChevronRight,
   IconFileTypePdf,
+  IconUpload,
+  IconFileCheck,
 } from '@tabler/icons-react';
 
 const STATUS_LABEL = {
@@ -94,6 +96,70 @@ export default function Dashboard({ onOpenUsaq }) {
       return;
     }
     setUsaqlar((prev) => prev.filter((u) => u.id !== id));
+  }
+
+  const [uploadingId, setUploadingId] = useState(null);
+
+  async function handleImzaliSenedYukle(e, usaq) {
+    e.stopPropagation();
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+
+    if (file.type !== 'application/pdf') {
+      setError('Yalnız PDF formatında fayl yükləyə bilərsiniz.');
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      setError('Fayl ölçüsü 15 MB-dan çox ola bilməz.');
+      return;
+    }
+
+    setUploadingId(usaq.id);
+    setError('');
+
+    const filePath = `imzali-senedler/${usaq.id}_${Date.now()}.pdf`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('senedler')
+      .upload(filePath, file, { contentType: 'application/pdf', upsert: true });
+
+    if (uploadError) {
+      setUploadingId(null);
+      setError('Yüklənmədi: ' + uploadError.message);
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from('senedler')
+      .getPublicUrl(filePath);
+
+    const { error: updateError } = await supabase
+      .from('usaqlar')
+      .update({
+        imzali_sened_url: urlData.publicUrl,
+        imzali_sened_yuklenme_tarixi: new Date().toISOString(),
+      })
+      .eq('id', usaq.id);
+
+    setUploadingId(null);
+
+    if (updateError) {
+      setError('Sənəd yükləndi, amma qeyd edilmədi: ' + updateError.message);
+      return;
+    }
+
+    setUsaqlar((prev) =>
+      prev.map((u) =>
+        u.id === usaq.id ? { ...u, imzali_sened_url: urlData.publicUrl } : u
+      )
+    );
+  }
+
+  function handleImzaliSenedEndir(e, usaq) {
+    e.stopPropagation();
+    if (!usaq.imzali_sened_url) return;
+    window.open(usaq.imzali_sened_url, '_blank');
   }
 
   const filtered = usaqlar.filter((u) => {
@@ -211,6 +277,7 @@ export default function Dashboard({ onOpenUsaq }) {
                 <th className="px-4 py-3 hidden md:table-cell">Sinif</th>
                 <th className="px-4 py-3 hidden md:table-cell">Şəhər/Rayon</th>
                 <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">İmzalı Sənəd</th>
                 <th className="px-4 py-3 w-10"></th>
               </tr>
             </thead>
@@ -244,6 +311,47 @@ export default function Dashboard({ onOpenUsaq }) {
                     >
                       {STATUS_LABEL[u.status] || u.status}
                     </span>
+                  </td>
+                  <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                    {u.imzali_sened_url ? (
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => handleImzaliSenedEndir(e, u)}
+                          className="flex items-center gap-1.5 text-green-700 bg-green-50 hover:bg-green-100 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors"
+                        >
+                          <IconFileCheck size={14} />
+                          Endir
+                        </button>
+                        <label
+                          className="text-slate-300 hover:text-blue-500 p-1 cursor-pointer transition-colors"
+                          title="Yenidən yüklə"
+                        >
+                          <IconUpload size={14} />
+                          <input
+                            type="file"
+                            accept="application/pdf"
+                            className="hidden"
+                            onChange={(e) => handleImzaliSenedYukle(e, u)}
+                          />
+                        </label>
+                      </div>
+                    ) : uploadingId === u.id ? (
+                      <span className="flex items-center gap-1.5 text-slate-400 text-xs font-medium px-2.5 py-1.5">
+                        <IconLoader2 size={14} className="animate-spin" />
+                        Yüklənir...
+                      </span>
+                    ) : (
+                      <label className="flex items-center gap-1.5 text-slate-500 bg-slate-50 hover:bg-slate-100 text-xs font-medium px-2.5 py-1.5 rounded-lg cursor-pointer transition-colors w-fit">
+                        <IconUpload size={14} />
+                        Yüklə
+                        <input
+                          type="file"
+                          accept="application/pdf"
+                          className="hidden"
+                          onChange={(e) => handleImzaliSenedYukle(e, u)}
+                        />
+                      </label>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-1">
